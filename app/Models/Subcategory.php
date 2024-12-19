@@ -11,11 +11,21 @@ class Subcategory extends Model
 
     protected $fillable = ['category_id','name', 'description'];
 
+    /**
+     * @OA\Property(
+     *     property="category",
+     * )
+     */
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * @OA\Property(
+     *     property="products",
+     *     type="array",
+     */
     public function products()
     {
         return $this->belongsToMany(Product::class,'product_subcategory');
