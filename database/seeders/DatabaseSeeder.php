@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Subcategory;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,7 +16,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory(10)->create();
-        Product::factory(20)->create();
+        $categories=Category::factory(15)->create();
+        $categories->each(function (Category $category) {
+            $subcategories=Subcategory::factory(5)->make();
+            $category->subcategories()->saveMany($subcategories);
+
+            $subcategories->each(function ($subcategory) {
+                $products=Product::factory(15)->make();
+                $subcategory->products()->saveMany($products);
+            });
+        });
     }
 }
