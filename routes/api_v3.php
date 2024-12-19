@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V3\CategoryController;
 use App\Http\Controllers\Api\V3\ProductController;
+use App\Http\Controllers\Api\V3\SubcategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,6 +11,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('lists/categories', [CategoryController::class,  'list']);
+Route::get('lists/subcategories', [SubCategoryController::class,  'list']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('categories', CategoryController::class);
