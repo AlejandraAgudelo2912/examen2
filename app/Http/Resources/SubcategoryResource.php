@@ -16,6 +16,11 @@ class SubcategoryResource extends JsonResource
             'name'=>$this->name,
             'description'=>$this->description,
             'category' => $this->category->name,
+            'products'=>$this->whenLoaded('products', function () {
+                return $this->products->isNotEmpty() ? $this->products->map(function ($product) {
+                    return $product->name;
+                }) : null;
+            }),
         ];
     }
 }

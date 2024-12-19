@@ -20,4 +20,11 @@ class SubcategoryController extends Controller
 
         return SubcategoryResource::collection($subcategory);
     }
+
+    public function privateList()
+    {
+        $subcategory = Subcategory::with('category','products')->paginate(12);
+
+        return SubcategoryResource::collection($subcategory);
+    }
 }
