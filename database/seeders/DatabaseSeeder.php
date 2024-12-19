@@ -18,12 +18,12 @@ class DatabaseSeeder extends Seeder
     {
         $categories=Category::factory(15)->create();
         $categories->each(function (Category $category) {
-            $subcategories=Subcategory::factory(5)->make();
-            $category->subcategories()->saveMany($subcategories);
-
-            $subcategories->each(function ($subcategory) {
-                $products=Product::factory(15)->make();
-                $subcategory->products()->saveMany($products);
+            $subcategories=Subcategory::factory(5)->create(['category_id'=>$category->id]);
+            $subcategories->each(function (Subcategory $subcategory) {
+                $products=Product::factory(5)->create();
+                foreach ($products as $product) {
+                    $subcategory->products()->attach($product->id);
+                }
             });
         });
     }
