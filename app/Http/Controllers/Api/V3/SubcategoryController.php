@@ -3,15 +3,40 @@
 namespace App\Http\Controllers\Api\V3;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreSubcategoryRequest;
 use App\Http\Resources\SubcategoryResource;
 use App\Models\Subcategory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SubcategoryController extends Controller
 {
     public function index()
     {
+        $subcategories = Subcategory::all();
+        return SubcategoryResource::collection($subcategories);
+    }
 
+    public function store(StoreSubcategoryRequest $request)
+    {
+        $subcategory = Subcategory::create($request->all());
+        $subcategory->products()->sync($request->input('products',[]));
+        return new SubcategoryResource($subcategory);
+    }
+
+    public function show(Subcategory $subcategory)
+    {
+        return new SubcategoryResource($subcategory);
+    }
+
+    public function update(Subcategory $subcategory, StoreSubcategoryRequest $request)
+    {
+        $subcategory->update($request->all());
+        return new SubcategoryResource($subcategory);
+    }
+
+    public function destroy(Subcategory $subcategory){
+        $subcategory->products()->detach();
+        $subcategory->delete();
+        return response()->noContent();
     }
 
     public function list()
